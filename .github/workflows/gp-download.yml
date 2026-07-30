@@ -44,6 +44,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/gp/requirements.txt
 
+      - name: Validate GP variables
+        run: |
+          if [ -z "$GP_INSTANCE" ] || [ -z "$GP_BUNDLE" ]; then
+            echo "::error::GP_INSTANCE or GP_BUNDLE is not set. Set repository Variables: GP_INSTANCE and GP_BUNDLE (Settings → Secrets and variables → Actions → Variables)."
+            exit 1
+          fi
+        env:
+          GP_INSTANCE: ${{ vars.GP_INSTANCE }}
+          GP_BUNDLE: ${{ vars.GP_BUNDLE }}
+
       - name: Download translations from GP
         working-directory: scripts/gp
         env:
@@ -144,6 +154,16 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r scripts/gp/requirements.txt
+
+      - name: Validate GP backend variables
+        run: |
+          if [ -z "$GP_INSTANCE" ] || [ -z "$GP_BACKEND_BUNDLE" ]; then
+            echo "::error::GP_INSTANCE or GP_BACKEND_BUNDLE is not set. Set repository Variables: GP_INSTANCE and GP_BACKEND_BUNDLE."
+            exit 1
+          fi
+        env:
+          GP_INSTANCE: ${{ vars.GP_INSTANCE }}
+          GP_BACKEND_BUNDLE: ${{ vars.GP_BACKEND_BUNDLE }}
 
       - name: Download backend translations from GP
         working-directory: scripts/gp
