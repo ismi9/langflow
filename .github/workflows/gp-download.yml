@@ -54,6 +54,16 @@ jobs:
           GP_INSTANCE: ${{ vars.GP_INSTANCE }}
           GP_BUNDLE: ${{ vars.GP_BUNDLE }}
 
+      - name: Validate GP admin secrets
+        run: |
+          if [ -z "$GP_ADMIN_USER_ID" ] || [ -z "$GP_ADMIN_PASSWORD" ]; then
+            echo "::error::GP_ADMIN_USER_ID or GP_ADMIN_PASSWORD is not set. Set repository Secrets: GP_ADMIN_USER_ID and GP_ADMIN_PASSWORD."
+            exit 1
+          fi
+        env:
+          GP_ADMIN_USER_ID: ${{ secrets.GP_ADMIN_USER_ID }}
+          GP_ADMIN_PASSWORD: ${{ secrets.GP_ADMIN_PASSWORD }}
+
       - name: Download translations from GP
         working-directory: scripts/gp
         env:
@@ -164,6 +174,16 @@ jobs:
         env:
           GP_INSTANCE: ${{ vars.GP_INSTANCE }}
           GP_BACKEND_BUNDLE: ${{ vars.GP_BACKEND_BUNDLE }}
+
+      - name: Validate GP admin secrets
+        run: |
+          if [ -z "$GP_ADMIN_USER_ID" ] || [ -z "$GP_ADMIN_PASSWORD" ]; then
+            echo "::error::GP_ADMIN_USER_ID or GP_ADMIN_PASSWORD is not set. Set repository Secrets: GP_ADMIN_USER_ID and GP_ADMIN_PASSWORD."
+            exit 1
+          fi
+        env:
+          GP_ADMIN_USER_ID: ${{ secrets.GP_ADMIN_USER_ID }}
+          GP_ADMIN_PASSWORD: ${{ secrets.GP_ADMIN_PASSWORD }}
 
       - name: Download backend translations from GP
         working-directory: scripts/gp
